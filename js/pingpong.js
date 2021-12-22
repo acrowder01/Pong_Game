@@ -60,7 +60,7 @@ const ball = {
     speed: 7,
     velocityX: 5,
     velocityY: 5,
-    color: '#05EDFF'
+    color: '#05EDF'
 };
 /* creating the objects  ends */
 
@@ -128,7 +128,78 @@ function render() {
 
 }
 
-// calling the render function() to create my dimensions for the canvas
-render();
 
 
+// creating the game Loop - flow control - 
+// keeps game going in a loop over and over untill the user quits game.
+function gameLoop() {
+    // update() function here
+    // update function, to update things position
+      function update() {
+    // move the paddle
+    if (upArrowPressed && user.y > 0) {
+        user.y -= 8;
+      } else if (downArrowPressed && (user.y < canvas.height - user.height)) {
+        user.y += 8;
+      }
+
+    /* moving Paddles */
+// add an eventListener to browser window
+window.addEventListener('keydown', keyDownHandler);
+window.addEventListener('keyup', keyUpHandler);
+
+// gets activated when we press down a key
+function keyDownHandler(event) {
+  // get the keyCode
+  switch (event.keyCode) {
+    // "up arrow" key
+    case 38:
+      // set upArrowPressed = true
+      upArrowPressed = true;
+      break;
+    // "down arrow" key
+    case 40:
+      downArrowPressed = true;
+      break;
+  }
+}
+
+// gets activated when we release the key
+function keyUpHandler(event) {
+  switch (event.keyCode) {
+    // "up arraow" key
+    case 38:
+      upArrowPressed = false;
+      break;
+    // "down arrow" key
+    case 40:
+      downArrowPressed = false;
+      break;
+  }
+}
+
+/* moving paddles section end */
+  
+
+
+    // check if ball hits top or bottom wall
+  
+    // move the ball
+    ball.x += ball.velocityX;
+    ball.y += ball.velocityY;
+  
+    // ai paddle movement
+  
+    // collision detection on paddles
+  
+  }
+
+    update();
+
+    // calling the render function() to create my dimensions for the canvas
+    // render() function here
+    render();
+  }
+  
+  // calls gameLoop() function 60 times per second
+  setInterval(gameLoop, 1000 / 60);
