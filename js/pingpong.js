@@ -144,6 +144,7 @@ function gameLoop() {
       }
 
     /* moving Paddles */
+
 // add an eventListener to browser window
 window.addEventListener('keydown', keyDownHandler);
 window.addEventListener('keyup', keyUpHandler);
@@ -183,6 +184,8 @@ function keyUpHandler(event) {
 
 
     // check if ball hits top or bottom wall
+
+    
   
     // move the ball
     ball.x += ball.velocityX;
