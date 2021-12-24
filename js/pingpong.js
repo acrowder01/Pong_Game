@@ -3,6 +3,14 @@ const canvas = document.getElementById('canvas');
 /* get a "context". Without "context", we can't draw on canvas */
 const ctx = canvas.getContext('2d');
 
+//  sounds
+const hitSound = new Audio('../sounds/hitSound.wav');
+const scoreSound = new Audio('../sounds/scoreSound.wav');
+const wallHitSound = new Audio('../sounds/wallHitSound.wav');
+
+ 
+
+
 /* some extra variables */
 const netWidth = 4;
 const netHeight = canvas.height;
@@ -172,6 +180,7 @@ function update() {
     // check if ball hits top or bottom wall
     if (ball.y + ball.radius >= canvas.height || ball.y - ball.radius <= 0) {
         // play wallHitSound
+        wallHitSound.play();
     
         ball.velocityY = -ball.velocityY;
       }
@@ -188,6 +197,7 @@ function update() {
       // if ball hit on left wall
       if (ball.x - ball.radius <= 0) {
         // play scoreSound
+        scoreSound.play();
     
         // then ai scored 1 point
         ai.score += 1;
@@ -200,13 +210,15 @@ function update() {
     ball.y += ball.velocityY;
   
     // ai paddle movement
-    ai.y += ((ball.y - (ai.y + ai.height / 2))) * 0.09;
+    //increase the value of .04 to make game harder
+    ai.y += ((ball.y - (ai.y + ai.height / 2))) * 0.04;
   
     // collision detection on paddles
     let player = (ball.x < canvas.width / 2) ? user : ai;
 
   if (collisionDetect(player, ball)) {
     // play hitSound
+    hitSound.play();
 
     // default angle is 0deg in Radian
     let angle = 0;
