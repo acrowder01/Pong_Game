@@ -191,6 +191,7 @@ function update() {
     
         // then user scored 1 point
         user.score += 1;
+        
         reset();
       }
     
@@ -283,3 +284,5 @@ function gameLoop() {
 
 // calls gameLoop() function 60 times per second
 setInterval(gameLoop, 1000 / 60);
+
+ 
