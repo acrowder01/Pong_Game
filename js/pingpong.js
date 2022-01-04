@@ -1,15 +1,27 @@
+
+
+// let gameStart = null;
+// while ( gameStart  !== "yes" && gameStart  !== "no") {
+//   gameStart = window.prompt("begin game", "yes/no")
+// }
+
+
+
+
+
+
 // grab a reference of our "canvas" using its id
 const canvas = document.getElementById('canvas');
 /* get a "context". Without "context", we can't draw on canvas */
 const ctx = canvas.getContext('2d');
 
 //  sounds
-const hitSound = new Audio('../sounds/hitSound.wav');
-const scoreSound = new Audio('../sounds/scoreSound.wav');
-const wallHitSound = new Audio('../sounds/wallHitSound.wav');
+const hitSound = new Audio('/sound/hitSound.wav');
+const scoreSound = new Audio('/sound/scoreSound.wav');
+const wallHitSound = new Audio('/sound/wallHitSound.wav');
 
  
-
+ 
 
 /* some extra variables */
 const netWidth = 4;
@@ -30,25 +42,25 @@ const net = {
   y: 0,
   width: netWidth,
   height: netHeight,
-  color: "#FFF"
+  color: "white"
 };
 
 // user paddle
 const user = {
-  x: 10,
+  x: 5,
   y: canvas.height / 2 - paddleHeight / 2,
   width: paddleWidth,
-  height: paddleHeight,
-  color: '#FFF',
+  height: 130,
+  color: 'blue',
   score: 0
 };
 
-const ai = {
+const computer = {
   x: canvas.width - (paddleWidth + 10),
   y: canvas.height / 2 - paddleHeight / 2,
   width: paddleWidth,
   height: paddleHeight,
-  color: '#FFF',
+  color: 'red',
   score: 0
 };
 
@@ -56,11 +68,11 @@ const ai = {
 const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
-  radius: 7,
-  speed: 7,
+  radius: 10,
+  speed: 5,
   velocityX: 5,
   velocityY: 5,
-  color: '#05EDFF'
+  color: 'yellow'
 };
 
 /* objects declaration ends */
@@ -77,7 +89,7 @@ function drawNet() {
 
 // function to draw score
 function drawScore(x, y, score) {
-  ctx.fillStyle = '#fff';
+  ctx.fillStyle = 'yellow';
   ctx.font = '35px sans-serif';
 
   // syntax --> fillText(text, x, y)
@@ -108,7 +120,7 @@ function drawBall(x, y, radius, color) {
 window.addEventListener('keydown', keyDownHandler);
 window.addEventListener('keyup', keyUpHandler);
 
-// gets activated when we press down a key
+// gets activated when we press down arrow key
 function keyDownHandler(event) {
   // get the keyCode
   switch (event.keyCode) {
@@ -122,6 +134,7 @@ function keyDownHandler(event) {
       downArrowPressed = true;
       break;
   }
+
 }
 
 // gets activated when we release the key
@@ -138,6 +151,17 @@ function keyUpHandler(event) {
   }
 }
 /* moving paddles section end */
+
+
+//control the user paddle with mouse
+canvas.addEventListener("mousemove", movepaddle);
+function movepaddle(evt){
+    let rect = canvas.getBoundingClientRect();
+
+    user.y = evt.clientY - rect.top - user.height/2 
+
+}
+
 
 // reset the ball
 
@@ -157,6 +181,7 @@ function collisionDetect(player, ball) {
     return ball.left < player.right && ball.top < player.bottom && ball.right > player.left && ball.bottom > player.top;
   }
 function reset() {
+  
     // reset ball's value to older values
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
@@ -167,8 +192,9 @@ function reset() {
     ball.velocityY = -ball.velocityY;
   }
 
-// update function, to update things position
+// update function, my logic to control the game
 function update() {
+  console.log("ace1 in update")
     // move the paddle
     if (upArrowPressed && user.y > 0) {
         user.y -= 8;
@@ -180,7 +206,7 @@ function update() {
     // check if ball hits top or bottom wall
     if (ball.y + ball.radius >= canvas.height || ball.y - ball.radius <= 0) {
         // play wallHitSound
-        wallHitSound.play();
+         wallHitSound.play();
     
         ball.velocityY = -ball.velocityY;
       }
@@ -188,8 +214,9 @@ function update() {
        // if ball hit on right wall
        if (ball.x + ball.radius >= canvas.width) {
         // play scoreSound
-    
-        // then user scored 1 point
+        scoreSound.play();
+
+        // increment user score by 1
         user.score += 1;
         
         reset();
@@ -198,10 +225,10 @@ function update() {
       // if ball hit on left wall
       if (ball.x - ball.radius <= 0) {
         // play scoreSound
-        scoreSound.play();
+         scoreSound.play();
     
-        // then ai scored 1 point
-        ai.score += 1;
+        // increment computer  score by 1
+        computer.score += 1;
         reset();
       }
 
@@ -210,16 +237,18 @@ function update() {
     ball.x += ball.velocityX;
     ball.y += ball.velocityY;
   
-    // ai paddle movement
+    // computer paddle movement
     //increase the value of .04 to make game harder
-    ai.y += ((ball.y - (ai.y + ai.height / 2))) * 0.04;
+    computer.y += ((ball.y - (computer.y + computer.height / 2))) * 0.03;
   
     // collision detection on paddles
-    let player = (ball.x < canvas.width / 2) ? user : ai;
+    let player = (ball.x < canvas.width / 2) ? user : computer;
 
   if (collisionDetect(player, ball)) {
     // play hitSound
-    hitSound.play();
+     hitSound.play();
+     
+    
 
     // default angle is 0deg in Radian
     let angle = 0;
@@ -240,17 +269,22 @@ function update() {
 
     // increase ball speed
     ball.speed += 0.2;
-  }
 
   
   }
+
+   
+  
+  }
+
+  
 
 
 
 // render function draws everything on to canvas
 function render() {
   // set a style
-  ctx.fillStyle = "#000"; /* whatever comes below this acquires black color (#000). */
+  ctx.fillStyle = "darkgoldenrod"; /* whatever comes below this acquires black color (#000). */
   // draws the black board
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw net
@@ -259,30 +293,47 @@ function render() {
   // draw user score
   drawScore(canvas.width / 4, canvas.height / 6, user.score);
 
-  // draw ai score
-  drawScore(3 * canvas.width / 4, canvas.height / 6, ai.score);
+  // draw computer score
+  drawScore(3 * canvas.width / 4, canvas.height / 6, computer.score,);
 
   // draw user paddle
   drawPaddle(user.x, user.y, user.width, user.height, user.color);
-  // draw ai paddle
+  // draw computer paddle
 
-  drawPaddle(ai.x, ai.y, ai.width, ai.height, ai.color);
+  drawPaddle(computer.x, computer.y, computer.width, computer.height, computer.color);
 
   // draw ball
   drawBall(ball.x, ball.y, ball.radius, ball.color);
+
+  
 }
+
+
+
+
 
 // gameLoop - control flow - keeps loop going until the user quits
 function gameLoop() {
+   console.log("ace in gameloop function")
+
+  
   // update() function here
   update();
+
+  
 
 
   // render() function here
   render();
 }
 
+
 // calls gameLoop() function 60 times per second
 setInterval(gameLoop, 1000 / 60);
 
+function startgame(){
+  gameLoop()
+}
  
+//StartGame function here
+ startgame();
