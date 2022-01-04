@@ -1,31 +1,33 @@
-Ping_Pong Game JavaScritp
+Ping_Pong Game JavaScritpt
  
-
-This is a very basic version of the popular old school  game "Ping Pong". 
-
-Technologies Used:
+ This is a very basic version of the popular old school  game "Ping Pong". 
+ Online version can be found at: https://acepong.netlify.app/
+ Code base can be be found at: https://github.com/acrowder01/Pong_Game
+ 
+ 
+TECHNOLOGIES USED:
 JavaScript
 Html
 CSS
 Canvas
 
-Instructions
+INSTRUCTIONS:
 This game will automatically begin to play once you enter the site. 
 Use the up and down keys to move the user's paddle and prevent the ball from hitting the wall. 
 If both the user and computer keeps hitting the ball, the speed of the ball will continue to increase untill either the user or computer misses.
 
 
-Features
+FEATURES:
 Scores for the player and computer is recorded above the paddles in a yellow color
 Thehe gaame will continue to play untill you log out of the site. 
 The blue paddle on the left is the user and the red paddle on the right is the computer.
 The user paddle is slightly taller in height so that it maybe a little easier to hit the ball and score points against the computer. 
 
-Upcoming Features
+UPCOMING FEATURES:
 Creating a start button to begin the game and setting a maximum winning score.
 
 
- License
+ lICENSE:
  
  Copyright 2022 Arthur Crowder
 
